@@ -1,2 +1,6 @@
 .Rhistory
 .Rproj*
+.Rproj.user
+
+results
+raw_data
