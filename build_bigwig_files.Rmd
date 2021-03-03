@@ -1,0 +1,47 @@
+---
+title: "Process ATAC-seq"
+author: "Matthew Berginski"
+date: "11/23/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(here)
+library(tictoc)
+
+library(rtracklayer)
+library(GenomicAlignments)
+
+# library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+
+# library(rtracklayer)
+# library(ChIPseeker)
+# 
+# library(soGGi)
+# 
+# library(ChIPQC)
+
+# library(DT)
+# library(dplyr)
+# library(tidyr)
+```
+
+```{r bigwig conversion}
+convert_to_bigwig <- function(file) {
+	output_file_name = paste0(basename(dirname(file)), '.bw')
+	
+	file %>%
+		readGAlignments() %>%
+		granges() %>%
+		coverage() %>%
+		export.bw(here('bigwig_files',output_file_name))
+}
+
+tic()
+# convert_to_bigwig(here('bam_files/SUM229_pos_DMSO/Aligned.sortedByCoord.out.bam'))
+convert_to_bigwig(here('bam_files/SUM229_pos_Bort/Aligned.sortedByCoord.out.bam'))
+convert_to_bigwig(here('bam_files/SUM229_pos_MK2206/Aligned.sortedByCoord.out.bam'))
+convert_to_bigwig(here('bam_files/SUM229_pos_Tram/Aligned.sortedByCoord.out.bam'))
+toc()
+```
